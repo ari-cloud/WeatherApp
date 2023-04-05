@@ -22,6 +22,8 @@
 		CA6C900529CB65CE00BF037A /* HomeScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6C900429CB65CE00BF037A /* HomeScreenViewModel.swift */; };
 		CA6C904829D8501C00BF037A /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6C904729D8501C00BF037A /* NetworkManager.swift */; };
 		CA6C904A29DD809400BF037A /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6C904929DD809400BF037A /* WeatherViewModel.swift */; };
+		CA6C904D29DDD8E300BF037A /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6C904C29DDD8E300BF037A /* HistoryViewController.swift */; };
+		CA6C904F29DDDCB700BF037A /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6C904E29DDDCB700BF037A /* HistoryTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +69,8 @@
 		CA6C900429CB65CE00BF037A /* HomeScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenViewModel.swift; sourceTree = "<group>"; };
 		CA6C904729D8501C00BF037A /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		CA6C904929DD809400BF037A /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
+		CA6C904C29DDD8E300BF037A /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
+		CA6C904E29DDDCB700BF037A /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,6 +191,7 @@
 		CA6C8FFD29CB0B4700BF037A /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				CA6C904B29DDD88C00BF037A /* HistoryScreen */,
 				CA6C8FFC29CAEC9100BF037A /* HomeScreen */,
 			);
 			path = Modules;
@@ -214,6 +219,15 @@
 				CA6C904729D8501C00BF037A /* NetworkManager.swift */,
 			);
 			path = Servises;
+			sourceTree = "<group>";
+		};
+		CA6C904B29DDD88C00BF037A /* HistoryScreen */ = {
+			isa = PBXGroup;
+			children = (
+				CA6C904C29DDD8E300BF037A /* HistoryViewController.swift */,
+				CA6C904E29DDDCB700BF037A /* HistoryTableViewCell.swift */,
+			);
+			path = HistoryScreen;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -457,10 +471,12 @@
 				CA6C904829D8501C00BF037A /* NetworkManager.swift in Sources */,
 				CA6C8FD129C37DA400BF037A /* HomeScreenViewController.swift in Sources */,
 				CA6C8FCD29C37DA400BF037A /* AppDelegate.swift in Sources */,
+				CA6C904F29DDDCB700BF037A /* HistoryTableViewCell.swift in Sources */,
 				CA6C904A29DD809400BF037A /* WeatherViewModel.swift in Sources */,
 				CA6C900029CB0BC100BF037A /* WeatherModel.swift in Sources */,
 				CA6C8FCF29C37DA400BF037A /* SceneDelegate.swift in Sources */,
 				CA6C900529CB65CE00BF037A /* HomeScreenViewModel.swift in Sources */,
+				CA6C904D29DDD8E300BF037A /* HistoryViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
