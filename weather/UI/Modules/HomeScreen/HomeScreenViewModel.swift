@@ -10,49 +10,36 @@ import RxSwift
 import RxCocoa
 
 class HomeScreenViewModel {
-    
-    let disposeBag = DisposeBag()
-    
     var searchText = PublishSubject<String?>()
+    var weatherViewModel = PublishSubject<WeatherViewModel>()
     
-    var cityName = PublishSubject<String>()
-    var degrees = PublishSubject<String>()
+    private let networkManager = NetworkManager()
+    private let disposeBag = DisposeBag()
     
-    var weather: Weather? {
-       didSet {
-          if let name = weather?.name {
-             DispatchQueue.main.async {
-                self.cityName.onNext(name)
-             }
-          }
-
-          if let temp = weather?.degrees {
-              DispatchQueue.main.async {
-                self.degrees.onNext("\(temp)°F")
-             }
-          }
-       }
-    }
-
     init() {
-        let jsonRequest = searchText.map { text in
-            let url = URL(string: text ?? "http://api.openweathermap.org/data/2.5/weather?q=")
-                return URLSession.shared.rx.json(request: URLRequest(url: url))
-        }
-            .switchLatest()
-    
-       jsonRequest
-          .subscribe { json in
-             self.weather = Weather(json: json)
-           }
-          .disposed(by: disposeBag)
-
+        searchText
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .subscribe { [weak self] text in
+                guard let text = text?.trimmingCharacters(in: .whitespacesAndNewlines) else { return }
+                self?.searchForWeather(with: text)
+            }
+            .disposed(by: disposeBag)
     }
-
     
-    private struct Constants {
-        static let URLPrefix = "http://api.openweathermap.org/data/2.5/weather?q="
-        static let URLPostfix = "/* my openweathermap APPID */"
+    private func searchForWeather(with text: String) {
+        NetworkManager().request(city: text, httpMethod: .get).subscribe(onNext: { data in
+            self.decodeData(data: data)
+        }, onError: {
+            print($0.localizedDescription)
+        }, onCompleted: {
+            print("completed")
+        })
+        .disposed(by: self.disposeBag)
     }
-
+    
+    private func decodeData(data: Data) {
+        let decoder = JSONDecoder()
+        guard let weather = try? decoder.decode(Weather.self, from: data) else { return }
+        self.weatherViewModel.onNext(WeatherViewModel(from: weather))
+    }
 }

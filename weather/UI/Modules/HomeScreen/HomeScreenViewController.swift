@@ -10,6 +10,8 @@ import RxSwift
 
 class HomeScreenViewController: UIViewController {
     
+    let viewModel = HomeScreenViewModel()
+    
     let weatherLabel: UILabel = {
         let label = UILabel()
         label.text = "What's the weather in"
@@ -23,6 +25,8 @@ class HomeScreenViewController: UIViewController {
         let textField = UITextField()
         textField.font = UIFont.systemFont(ofSize: 16)
         textField.textColor = .black
+        textField.textAlignment = .center
+        textField.placeholder = "Tap your city"
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.layer.cornerRadius = 5
         textField.layer.borderWidth = 2.0
@@ -33,7 +37,7 @@ class HomeScreenViewController: UIViewController {
     
     let cityNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "London"
+        label.text = "Select the city"
         label.textColor = .black
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -49,8 +53,7 @@ class HomeScreenViewController: UIViewController {
         return label
     }()
     
-    let viewModel = HomeScreenViewModel()
-    let disposeBag = DisposeBag()
+    private let disposeBag = DisposeBag()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,17 +69,19 @@ class HomeScreenViewController: UIViewController {
         
         setupLayoutConstraints()
         
-        viewModel.cityName.bind(to: cityNameLabel.rx.text)
-                 .disposed(by: disposeBag)
-         
-        viewModel.degrees.bind(to: tempertureLabel.rx.text)
-                 .disposed(by: disposeBag)
-        
-        textField.rx.text.subscribe { text in
-           self.viewModel.searchText.onNext(text)
-           }
+        viewModel.weatherViewModel.subscribe(onNext: { [weak self] weather in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                self.cityNameLabel.text = weather.name
+                self.tempertureLabel.text = weather.degrees
+            }
+        })
         .disposed(by: disposeBag)
         
+        textField.rx.text
+            .orEmpty
+            .bind(to: viewModel.searchText)
+            .disposed(by: disposeBag)
     }
     
     func setupLayoutConstraints() {
@@ -98,7 +103,6 @@ class HomeScreenViewController: UIViewController {
             tempertureLabel.heightAnchor.constraint(equalToConstant: 32),
             tempertureLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             tempertureLabel.topAnchor.constraint(equalTo: cityNameLabel.bottomAnchor, constant: 10)
-            
         ]
         
         NSLayoutConstraint.activate(constraints)
@@ -108,10 +112,8 @@ class HomeScreenViewController: UIViewController {
 }
 
 extension HomeScreenViewController: UITextFieldDelegate {
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
     }
-    
 }
 
