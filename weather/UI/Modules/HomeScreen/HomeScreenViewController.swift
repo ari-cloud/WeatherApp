@@ -12,7 +12,7 @@ class HomeScreenViewController: UIViewController {
     
     let viewModel = HomeScreenViewModel()
     
-    let weatherLabel: UILabel = {
+    private let weatherLabel: UILabel = {
         let label = UILabel()
         label.text = "What's the weather in"
         label.textColor = .black
@@ -21,7 +21,7 @@ class HomeScreenViewController: UIViewController {
         return label
     }()
     
-    let textField: UITextField = {
+    private let textField: UITextField = {
         let textField = UITextField()
         textField.font = UIFont.systemFont(ofSize: 16)
         textField.textColor = .black
@@ -35,7 +35,7 @@ class HomeScreenViewController: UIViewController {
         return textField
     }()
     
-    let cityNameLabel: UILabel = {
+    private let cityNameLabel: UILabel = {
         let label = UILabel()
         label.text = "Select the city"
         label.textColor = .black
@@ -44,13 +44,22 @@ class HomeScreenViewController: UIViewController {
         return label
     }()
     
-    let tempertureLabel: UILabel = {
+    private let tempertureLabel: UILabel = {
         let label = UILabel()
         label.text = "0.0°"
         label.textColor = .black
         label.font = UIFont.boldSystemFont(ofSize: 30)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
+    }()
+    
+    private let showHistoryButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .gray
+        button.setTitle("Show History", for: button.state)
+        button.addTarget(HomeScreenViewController.self, action: #selector(showHistoryButtonAction), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
     
     private let disposeBag = DisposeBag()
@@ -60,12 +69,9 @@ class HomeScreenViewController: UIViewController {
         
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
         
+        
         view.addGestureRecognizer(tap)
         view.backgroundColor = .white
-        view.addSubview(weatherLabel)
-        view.addSubview(textField)
-        view.addSubview(cityNameLabel)
-        view.addSubview(tempertureLabel)
         
         setupLayoutConstraints()
         
@@ -84,7 +90,16 @@ class HomeScreenViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    func setupLayoutConstraints() {
+    @objc func showHistoryButtonAction(sender: UIButton) {
+        
+    }
+    
+    private func setupLayoutConstraints() {
+        view.addSubview(weatherLabel)
+        view.addSubview(textField)
+        view.addSubview(cityNameLabel)
+        view.addSubview(tempertureLabel)
+        view.addSubview(showHistoryButton)
         
         let constraints = [
             weatherLabel.heightAnchor.constraint(equalToConstant: 24),
@@ -102,7 +117,12 @@ class HomeScreenViewController: UIViewController {
             
             tempertureLabel.heightAnchor.constraint(equalToConstant: 32),
             tempertureLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            tempertureLabel.topAnchor.constraint(equalTo: cityNameLabel.bottomAnchor, constant: 10)
+            tempertureLabel.topAnchor.constraint(equalTo: cityNameLabel.bottomAnchor, constant: 10),
+            
+            showHistoryButton.heightAnchor.constraint(equalToConstant: 50),
+            showHistoryButton.widthAnchor.constraint(equalToConstant: 300),
+            showHistoryButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            showHistoryButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100)
         ]
         
         NSLayoutConstraint.activate(constraints)
