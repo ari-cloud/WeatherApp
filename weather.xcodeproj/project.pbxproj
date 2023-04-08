@@ -25,6 +25,8 @@
 		CA6C904D29DDD8E300BF037A /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6C904C29DDD8E300BF037A /* HistoryViewController.swift */; };
 		CA6C904F29DDDCB700BF037A /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6C904E29DDDCB700BF037A /* HistoryTableViewCell.swift */; };
 		CA6C905129DEC75300BF037A /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6C905029DEC75300BF037A /* HistoryViewModel.swift */; };
+		CA6C905329E1D7D100BF037A /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6C905229E1D7D100BF037A /* StorageManager.swift */; };
+		CA6C905529E1DDD300BF037A /* FavoriteItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6C905429E1DDD300BF037A /* FavoriteItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +75,8 @@
 		CA6C904C29DDD8E300BF037A /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		CA6C904E29DDDCB700BF037A /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
 		CA6C905029DEC75300BF037A /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
+		CA6C905229E1D7D100BF037A /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		CA6C905429E1DDD300BF037A /* FavoriteItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -211,6 +215,7 @@
 			isa = PBXGroup;
 			children = (
 				CA6C8FFF29CB0BC100BF037A /* WeatherModel.swift */,
+				CA6C905429E1DDD300BF037A /* FavoriteItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -219,6 +224,7 @@
 			isa = PBXGroup;
 			children = (
 				CA6C904729D8501C00BF037A /* NetworkManager.swift */,
+				CA6C905229E1D7D100BF037A /* StorageManager.swift */,
 			);
 			path = Servises;
 			sourceTree = "<group>";
@@ -473,11 +479,13 @@
 			files = (
 				CA6C904829D8501C00BF037A /* NetworkManager.swift in Sources */,
 				CA6C8FD129C37DA400BF037A /* HomeScreenViewController.swift in Sources */,
+				CA6C905329E1D7D100BF037A /* StorageManager.swift in Sources */,
 				CA6C8FCD29C37DA400BF037A /* AppDelegate.swift in Sources */,
 				CA6C904F29DDDCB700BF037A /* HistoryTableViewCell.swift in Sources */,
 				CA6C904A29DD809400BF037A /* WeatherViewModel.swift in Sources */,
 				CA6C905129DEC75300BF037A /* HistoryViewModel.swift in Sources */,
 				CA6C900029CB0BC100BF037A /* WeatherModel.swift in Sources */,
+				CA6C905529E1DDD300BF037A /* FavoriteItem.swift in Sources */,
 				CA6C8FCF29C37DA400BF037A /* SceneDelegate.swift in Sources */,
 				CA6C900529CB65CE00BF037A /* HomeScreenViewModel.swift in Sources */,
 				CA6C904D29DDD8E300BF037A /* HistoryViewController.swift in Sources */,

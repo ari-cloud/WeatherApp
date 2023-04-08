@@ -163,16 +163,15 @@ class HomeScreenViewController: UIViewController {
     }
     
     @objc func favouriteButtonAction(sender: UIButton) {
+        guard let name = self.cityNameLabel.text else { return }
+        guard let temperature = self.tempertureLabel.text else { return }
         if sender.image(for: .normal) == UIImage(named: "favouriteIconNotChoosen") {
-            guard let name = self.cityNameLabel.text else { return }
-            guard let temperature = self.tempertureLabel.text else { return }
-            print(name)
             viewModel.addToFavouriteItems(name: name, temperature: temperature)
             sender.setImage(UIImage(named: "favouriteIconChoosen"), for: .normal)
         } else {
+            viewModel.deleteFromFavouriteItems(name: name)
             sender.setImage(UIImage(named: "favouriteIconNotChoosen"), for: .normal)
         }
-        
     }
     
     private func setupLayoutConstraints() {
