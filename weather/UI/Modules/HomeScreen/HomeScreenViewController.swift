@@ -47,6 +47,7 @@ class HomeScreenViewController: UIViewController {
     private let favouriteButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "favouriteIconNotChoosen"), for: .normal)
+        button.addTarget(self, action: #selector(favouriteButtonAction), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -157,8 +158,21 @@ class HomeScreenViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    @objc func showHistoryButtonAction(_ sender: UIButton) {
+    @objc func showHistoryButtonAction(sender: UIButton) {
         navigationController?.pushViewController(HistoryViewController(), animated: true)
+    }
+    
+    @objc func favouriteButtonAction(sender: UIButton) {
+        if sender.image(for: .normal) == UIImage(named: "favouriteIconNotChoosen") {
+            guard let name = self.cityNameLabel.text else { return }
+            guard let temperature = self.tempertureLabel.text else { return }
+            print(name)
+            viewModel.addToFavouriteItems(name: name, temperature: temperature)
+            sender.setImage(UIImage(named: "favouriteIconChoosen"), for: .normal)
+        } else {
+            sender.setImage(UIImage(named: "favouriteIconNotChoosen"), for: .normal)
+        }
+        
     }
     
     private func setupLayoutConstraints() {

@@ -13,7 +13,7 @@ class HomeScreenViewModel {
     var searchText = PublishSubject<String?>()
     var weatherViewModel = PublishSubject<WeatherViewModel>()
     
-    var favouriteItems: [FavouriteItem]?
+    var favouriteItems: [FavouriteItem] = []
     
     private let networkManager = NetworkManager()
     private let disposeBag = DisposeBag()
@@ -28,16 +28,20 @@ class HomeScreenViewModel {
             .disposed(by: disposeBag)
     }
     
-    struct FavouriteItem {
-        var name: String
-        var temperature: String
+    func addToFavouriteItems(name: String, temperature: String) {
+        if self.favouriteItems.count < 3 {
+            let item = FavouriteItem(name: name, temperature: temperature)
+            self.favouriteItems.append(item)
+        }
     }
     
-    func addToFavouriteItems(name: String, temperature: String) {
-        guard let favouriteItems = self.favouriteItems else { return }
-        if favouriteItems.count >= 3 {
-            var item: FavouriteItem = FavouriteItem(name: name, temperature: temperature)
-            self.favouriteItems?.append(item)
+    func deleteFromFavouriteItems(name: String) {
+        var counter = 0
+        for item in self.favouriteItems {
+            counter += 1
+            if name == item.name {
+                favouriteItems.remove(at: counter)
+            }
         }
     }
     
@@ -56,5 +60,10 @@ class HomeScreenViewModel {
         let decoder = JSONDecoder()
         guard let weather = try? decoder.decode(Weather.self, from: data) else { return }
         self.weatherViewModel.onNext(WeatherViewModel(from: weather))
+    }
+    
+    struct FavouriteItem {
+        var name: String
+        var temperature: String
     }
 }
