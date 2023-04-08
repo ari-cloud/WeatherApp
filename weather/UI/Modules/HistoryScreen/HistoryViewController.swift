@@ -9,7 +9,9 @@ import UIKit
 
 class HistoryViewController: UIViewController {
 
-    let historyTableView: UITableView = {
+    let viewModel = HistoryViewModel()
+    
+    private let historyTableView: UITableView = {
         let tableView = UITableView()
         tableView.allowsSelection = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
