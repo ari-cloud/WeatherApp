@@ -10,29 +10,29 @@ import RealmSwift
 
 class StorageManager {
     
-    let realm = try? Realm()
+    let realm = try! Realm()
     
     func addToStorageManager(item: WeatherFavouriteItem) {
-        try? realm?.write {
-            self.realm?.add(item)
-            print(realm?.objects(WeatherFavouriteItem.self))
+        try? realm.write {
+            self.realm.add(item)
+            print(realm.objects(WeatherFavouriteItem.self))
         }
     }
     
     func deleteFromStorageManager(item: WeatherFavouriteItem) {
-        try? realm?.write {
-            self.realm?.delete(item)
+        try? realm.write {
+            self.realm.delete(item)
         }
     }
     
     func clearStorageManager() {
-        try? realm?.write {
-            self.realm?.deleteAll()
+        try? realm.write {
+            self.realm.deleteAll()
         }
     }
     
     func getFromStorageManager() {
-        try? realm?.write {
+        try? realm.write {
             
         }
     }

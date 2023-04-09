@@ -8,12 +8,15 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import RealmSwift
 
 class HomeScreenViewModel {
     var searchText = PublishSubject<String?>()
     var weatherViewModel = PublishSubject<WeatherViewModel>()
     
-    var favouriteItems: [WeatherFavouriteItem] = []
+    lazy var favouriteItems: Results<WeatherFavouriteItem> = {self.realm.objects(WeatherFavouriteItem.self)}()
+
+    let realm = StorageManager().realm
     
     private let networkManager = NetworkManager()
     private let storageManager = StorageManager()
@@ -29,25 +32,22 @@ class HomeScreenViewModel {
             .disposed(by: disposeBag)
     }
     
-    func addToFavouriteItems(name: String, temperature: String) {
+    func addToFavouriteItems(name: String, temperature: String, comletion: @escaping () -> ()) {
         if self.favouriteItems.count < 3 {
             let item = WeatherFavouriteItem()
             item.name = name
             item.temperature = temperature
-            self.favouriteItems.append(item)
-            print(self.favouriteItems)
             self.storageManager.addToStorageManager(item: item)
+//            self.favouriteItems = {self.realm.objects(WeatherFavouriteItem.self)}()
+            print(self.favouriteItems)
+        } else {
+           comletion()
         }
+        
     }
-    
+
     func deleteFromFavouriteItems(name: String) {
-        var counter = 0
-        for item in self.favouriteItems {
-            counter += 1
-            if name == item.name {
-                favouriteItems.remove(at: counter)
-            }
-        }
+        storageManager.clearStorageManager()
     }
     
     private func searchForWeather(with text: String) {

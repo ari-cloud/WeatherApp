@@ -27,6 +27,7 @@
 		CA6C905129DEC75300BF037A /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6C905029DEC75300BF037A /* HistoryViewModel.swift */; };
 		CA6C905329E1D7D100BF037A /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6C905229E1D7D100BF037A /* StorageManager.swift */; };
 		CA6C905529E1DDD300BF037A /* FavoriteItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6C905429E1DDD300BF037A /* FavoriteItem.swift */; };
+		CA6C905729E2C90F00BF037A /* FavouritesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6C905629E2C90F00BF037A /* FavouritesTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		CA6C905029DEC75300BF037A /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
 		CA6C905229E1D7D100BF037A /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		CA6C905429E1DDD300BF037A /* FavoriteItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteItem.swift; sourceTree = "<group>"; };
+		CA6C905629E2C90F00BF037A /* FavouritesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,6 +192,7 @@
 				CA6C8FD029C37DA400BF037A /* HomeScreenViewController.swift */,
 				CA6C900429CB65CE00BF037A /* HomeScreenViewModel.swift */,
 				CA6C904929DD809400BF037A /* WeatherViewModel.swift */,
+				CA6C905629E2C90F00BF037A /* FavouritesTableViewCell.swift */,
 			);
 			path = HomeScreen;
 			sourceTree = "<group>";
@@ -482,6 +485,7 @@
 				CA6C905329E1D7D100BF037A /* StorageManager.swift in Sources */,
 				CA6C8FCD29C37DA400BF037A /* AppDelegate.swift in Sources */,
 				CA6C904F29DDDCB700BF037A /* HistoryTableViewCell.swift in Sources */,
+				CA6C905729E2C90F00BF037A /* FavouritesTableViewCell.swift in Sources */,
 				CA6C904A29DD809400BF037A /* WeatherViewModel.swift in Sources */,
 				CA6C905129DEC75300BF037A /* HistoryViewModel.swift in Sources */,
 				CA6C900029CB0BC100BF037A /* WeatherModel.swift in Sources */,

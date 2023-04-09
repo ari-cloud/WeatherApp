@@ -61,65 +61,13 @@ class HomeScreenViewController: UIViewController {
         return label
     }()
     
-    private let favouritesView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .gray
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    let firstFavouriteCityLabel: UILabel = {
-        let label = UILabel()
-        label.text = "First"
-        label.textColor = .white
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    let firstFavouriteCityTemperatureLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Temperature"
-        label.textColor = .white
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    let secondFavouriteCityLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Second"
-        label.textColor = .white
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    let secondFavouriteCityTemperatureLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Temperature"
-        label.textColor = .white
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    let thirdFavouriteCityLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Third"
-        label.textColor = .white
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    let thirdFavouriteCityTemperatureLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Temperature"
-        label.textColor = .white
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+    private let favouriteTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.backgroundColor = .gray
+        tableView.allowsSelection = false
+        tableView.isScrollEnabled = false
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
     }()
     
     private let showHistoryButton: UIButton = {
@@ -148,6 +96,7 @@ class HomeScreenViewController: UIViewController {
             DispatchQueue.main.async {
                 self.cityNameLabel.text = weather.name
                 self.tempertureLabel.text = weather.degrees
+                self.favouriteButton.setImage(UIImage(named: "favouriteIconNotChoosen"), for: .normal)
             }
         })
         .disposed(by: disposeBag)
@@ -166,12 +115,25 @@ class HomeScreenViewController: UIViewController {
         guard let name = self.cityNameLabel.text else { return }
         guard let temperature = self.tempertureLabel.text else { return }
         if sender.image(for: .normal) == UIImage(named: "favouriteIconNotChoosen") {
-            viewModel.addToFavouriteItems(name: name, temperature: temperature)
+            viewModel.addToFavouriteItems(name: name, temperature: temperature, comletion: showAlert)
             sender.setImage(UIImage(named: "favouriteIconChoosen"), for: .normal)
         } else {
             viewModel.deleteFromFavouriteItems(name: name)
             sender.setImage(UIImage(named: "favouriteIconNotChoosen"), for: .normal)
         }
+    }
+    
+    func showAlert() {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "Favorites cannot contain more than three items. Delete item to continue", message: nil, preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alert.addAction(cancelAction)
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    private func bindFavouriteTableView() {
+        
     }
     
     private func setupLayoutConstraints() {
@@ -180,14 +142,8 @@ class HomeScreenViewController: UIViewController {
         view.addSubview(cityNameLabel)
         view.addSubview(favouriteButton)
         view.addSubview(tempertureLabel)
+        view.addSubview(favouriteTableView)
         view.addSubview(showHistoryButton)
-        view.addSubview(favouritesView)
-        favouritesView.addSubview(firstFavouriteCityLabel)
-        favouritesView.addSubview(firstFavouriteCityTemperatureLabel)
-        favouritesView.addSubview(secondFavouriteCityLabel)
-        favouritesView.addSubview(secondFavouriteCityTemperatureLabel)
-        favouritesView.addSubview(thirdFavouriteCityLabel)
-        favouritesView.addSubview(thirdFavouriteCityTemperatureLabel)
         
         let weatherLabelConstraints = [
             weatherLabel.heightAnchor.constraint(equalToConstant: 24),
@@ -221,34 +177,12 @@ class HomeScreenViewController: UIViewController {
             tempertureLabel.topAnchor.constraint(equalTo: cityNameLabel.bottomAnchor, constant: 10)
         ]
             
-        let favouritesViewConstraints = [
-            favouritesView.widthAnchor.constraint(equalToConstant: 300),
-            favouritesView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            favouritesView.topAnchor.constraint(equalTo: tempertureLabel.bottomAnchor, constant: 40)
-        ]
-            
-        let firstFavouriteItemConstraints = [
-            firstFavouriteCityLabel.centerXAnchor.constraint(equalTo: favouritesView.centerXAnchor),
-            firstFavouriteCityLabel.topAnchor.constraint(equalTo: favouritesView.topAnchor, constant: 20),
-            firstFavouriteCityTemperatureLabel.centerXAnchor.constraint(equalTo: favouritesView.centerXAnchor),
-            firstFavouriteCityTemperatureLabel.topAnchor.constraint(equalTo: firstFavouriteCityLabel.bottomAnchor, constant: 10)
-        ]
-            
-        let secondFavouriteItemConstraints = [
-            secondFavouriteCityLabel.centerXAnchor.constraint(equalTo: favouritesView.centerXAnchor),
-            secondFavouriteCityLabel.topAnchor.constraint(equalTo: firstFavouriteCityTemperatureLabel.bottomAnchor, constant: 20),
-            secondFavouriteCityTemperatureLabel.centerXAnchor.constraint(equalTo: favouritesView.centerXAnchor),
-            secondFavouriteCityTemperatureLabel.topAnchor.constraint(equalTo: secondFavouriteCityLabel.bottomAnchor, constant: 10)
-        ]
-            
-        let thirdFavouriteItemConstraints = [
-            thirdFavouriteCityLabel.centerXAnchor.constraint(equalTo: favouritesView.centerXAnchor),
-            thirdFavouriteCityLabel.topAnchor.constraint(equalTo: secondFavouriteCityTemperatureLabel.bottomAnchor, constant: 20),
-            thirdFavouriteCityTemperatureLabel.centerXAnchor.constraint(equalTo: favouritesView.centerXAnchor),
-            thirdFavouriteCityTemperatureLabel.topAnchor.constraint(equalTo: thirdFavouriteCityLabel.bottomAnchor, constant: 10),
-            thirdFavouriteCityTemperatureLabel.bottomAnchor.constraint(equalTo: favouritesView.bottomAnchor, constant: -10)
-        ]
-            
+       let favouriteTableViewConstraints = [
+        favouriteTableView.widthAnchor.constraint(equalToConstant: 300),
+        favouriteTableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        favouriteTableView.topAnchor.constraint(equalTo: tempertureLabel.bottomAnchor, constant: 40)
+       ]
+        
        let showHistoryButtonConstraints = [
             showHistoryButton.heightAnchor.constraint(equalToConstant: 50),
             showHistoryButton.widthAnchor.constraint(equalToConstant: 300),
@@ -256,7 +190,7 @@ class HomeScreenViewController: UIViewController {
             showHistoryButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100)
        ]
         
-        NSLayoutConstraint.activate(weatherLabelConstraints + textFieldConstraints + cityNameLabelConstraints + favouriteButtonConstraint + temperatureLabelConstraint + favouritesViewConstraints + firstFavouriteItemConstraints + secondFavouriteItemConstraints + thirdFavouriteItemConstraints + showHistoryButtonConstraints)
+        NSLayoutConstraint.activate(weatherLabelConstraints + textFieldConstraints + cityNameLabelConstraints + favouriteButtonConstraint + temperatureLabelConstraint + favouriteTableViewConstraints + showHistoryButtonConstraints)
     }
 }
 
