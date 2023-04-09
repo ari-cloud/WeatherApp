@@ -96,7 +96,8 @@ class HomeScreenViewController: UIViewController, UIScrollViewDelegate {
             DispatchQueue.main.async {
                 self.cityNameLabel.text = weather.name
                 self.tempertureLabel.text = weather.degrees
-                self.favouriteButton.setImage(UIImage(named: "favouriteIconNotChoosen"), for: .normal)
+                guard let name = weather.name else { return }
+                self.checkFavourites(name: name)
             }
         })
         .disposed(by: disposeBag)
@@ -129,6 +130,16 @@ class HomeScreenViewController: UIViewController, UIScrollViewDelegate {
             let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alert.addAction(cancelAction)
             self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func checkFavourites(name: String) {
+        for item in viewModel.favouriteItems {
+            if item.name == name {
+                self.favouriteButton.setImage(UIImage(named: "favouriteIconChoosen"), for: .normal)
+            } else {
+                self.favouriteButton.setImage(UIImage(named: "favouriteIconNotChoosen"), for: .normal)
+            }
         }
     }
     
