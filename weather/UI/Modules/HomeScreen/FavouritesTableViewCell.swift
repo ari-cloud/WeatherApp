@@ -8,8 +8,10 @@
 import UIKit
 
 class FavouritesTableViewCell: UITableViewCell {
+    
+    static let cellId = String(describing: FavouritesTableViewCell.self)
 
-    private let favouriteCityLabel: UILabel = {
+    let favouriteCityLabel: UILabel = {
         let label = UILabel()
         label.text = "Name"
         label.textColor = .white
@@ -18,7 +20,7 @@ class FavouritesTableViewCell: UITableViewCell {
         return label
     }()
     
-    private let favouriteCityTemperatureLabel: UILabel = {
+    let favouriteCityTemperatureLabel: UILabel = {
         let label = UILabel()
         label.text = "Temperature"
         label.textColor = .white
@@ -30,8 +32,8 @@ class FavouritesTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        self.translatesAutoresizingMaskIntoConstraints = false
         contentView.backgroundColor = .gray
-        
         setupLayoutConstraint()
         
     }

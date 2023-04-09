@@ -15,6 +15,7 @@ class HomeScreenViewModel {
     var weatherViewModel = PublishSubject<WeatherViewModel>()
     
     lazy var favouriteItems: Results<WeatherFavouriteItem> = {self.realm.objects(WeatherFavouriteItem.self)}()
+    let itemsForFavouriteTableView = PublishSubject<Results<WeatherFavouriteItem>>()
 
     let realm = StorageManager().realm
     
@@ -38,7 +39,8 @@ class HomeScreenViewModel {
             item.name = name
             item.temperature = temperature
             self.storageManager.addToStorageManager(item: item)
-//            self.favouriteItems = {self.realm.objects(WeatherFavouriteItem.self)}()
+            itemsForFavouriteTableView.onNext(self.favouriteItems)
+            itemsForFavouriteTableView.onCompleted()
             print(self.favouriteItems)
         } else {
            comletion()

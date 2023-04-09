@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class HomeScreenViewController: UIViewController {
+class HomeScreenViewController: UIViewController, UIScrollViewDelegate {
     
     let viewModel = HomeScreenViewModel()
     
@@ -133,7 +133,12 @@ class HomeScreenViewController: UIViewController {
     }
     
     private func bindFavouriteTableView() {
-        
+        favouriteTableView.register(FavouritesTableViewCell.self, forCellReuseIdentifier: FavouritesTableViewCell.cellId)
+        favouriteTableView.rx.setDelegate(self).disposed(by: disposeBag)
+        viewModel.itemsForFavouriteTableView.bind(to: favouriteTableView.rx.items(cellIdentifier: FavouritesTableViewCell.cellId, cellType: FavouritesTableViewCell.self)){index, item, cell in
+            cell.favouriteCityLabel.text = item.name
+            cell.favouriteCityTemperatureLabel.text = item.temperature
+        }.disposed(by: disposeBag)
     }
     
     private func setupLayoutConstraints() {
@@ -178,9 +183,10 @@ class HomeScreenViewController: UIViewController {
         ]
             
        let favouriteTableViewConstraints = [
-        favouriteTableView.widthAnchor.constraint(equalToConstant: 300),
-        favouriteTableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        favouriteTableView.topAnchor.constraint(equalTo: tempertureLabel.bottomAnchor, constant: 40)
+            favouriteTableView.widthAnchor.constraint(equalToConstant: 300),
+            favouriteTableView.heightAnchor.constraint(equalToConstant: 300),
+            favouriteTableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            favouriteTableView.topAnchor.constraint(equalTo: tempertureLabel.bottomAnchor, constant: 40)
        ]
         
        let showHistoryButtonConstraints = [
