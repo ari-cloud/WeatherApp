@@ -6,10 +6,13 @@
 //
 
 import UIKit
+import RxSwift
 
-class HistoryViewController: UIViewController {
+class HistoryViewController: UIViewController, UIScrollViewDelegate {
 
     var viewModel: HistoryViewModel?
+    
+    private let disposeBag = DisposeBag()
     
     private let historyTableView: UITableView = {
         let tableView = UITableView()
@@ -25,6 +28,14 @@ class HistoryViewController: UIViewController {
         
         setupLayoutConstraints()
 
+    }
+    
+    private func bindFavouriteTableView() {
+        historyTableView.register(HistoryTableViewCell.self, forCellReuseIdentifier: HistoryTableViewCell.cellId)
+        historyTableView.rx.setDelegate(self).disposed(by: disposeBag)
+        viewModel?.items.bind(to: historyTableView.rx.items(cellIdentifier: HistoryTableViewCell.cellId, cellType: HistoryTableViewCell.self)){index, item, cell in
+            cell.cityNameLabel.text = item
+        }.disposed(by: disposeBag)
     }
     
     func setupLayoutConstraints() {

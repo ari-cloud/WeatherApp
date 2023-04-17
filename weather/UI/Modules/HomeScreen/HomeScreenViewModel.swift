@@ -47,7 +47,6 @@ class HomeScreenViewModel {
         } else {
            comletion()
         }
-        
     }
 
     func deleteFromFavouriteItems(name: String) {

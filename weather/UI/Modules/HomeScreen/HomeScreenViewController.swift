@@ -93,7 +93,7 @@ class HomeScreenViewController: UIViewController, UIScrollViewDelegate {
                 self.tempertureLabel.text = weather.degrees
                 guard let name = weather.name else { return }
                 self.viewModel.historyItemsList.append(name)
-                print(self.viewModel.historyItemsList)
+//                print(self.viewModel.historyItemsList)
                 self.checkIfItemInFavourites(name: name)
             }
         })
@@ -108,7 +108,11 @@ class HomeScreenViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc func showHistoryButtonAction(sender: UIButton) {
-        navigationController?.pushViewController(HistoryViewController(), animated: true)
+        let viewController = HistoryViewController()
+        let list = self.viewModel.historyItemsList
+        let viewModel = HistoryViewModel(itemsList: list)
+        viewController.viewModel = viewModel
+        navigationController?.pushViewController(viewController, animated: true)
     }
     
     @objc func favouriteButtonAction(sender: UIButton) {

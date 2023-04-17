@@ -15,6 +15,7 @@ class HistoryViewModel {
     
     init(itemsList: [String]) {
         self.itemsList = itemsList
+        items.onNext(itemsList)
     }
     
 }

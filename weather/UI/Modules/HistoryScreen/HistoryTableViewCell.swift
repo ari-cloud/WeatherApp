@@ -8,11 +8,14 @@
 import UIKit
 
 class HistoryTableViewCell: UITableViewCell {
+    
+    static let cellId = String(describing: HistoryTableViewCell.self)
 
     let cityNameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 20)
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
