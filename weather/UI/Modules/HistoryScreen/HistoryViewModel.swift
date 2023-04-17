@@ -6,7 +6,15 @@
 //
 
 import Foundation
+import RxSwift
 
 class HistoryViewModel {
+    
+    let itemsList: [String]
+    let items = PublishSubject<[String]>()
+    
+    init(itemsList: [String]) {
+        self.itemsList = itemsList
+    }
     
 }

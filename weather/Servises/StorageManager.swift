@@ -15,7 +15,6 @@ class StorageManager {
     func addToStorageManager(item: WeatherFavouriteItem) {
         try? realm.write {
             self.realm.add(item)
-            print(realm.objects(WeatherFavouriteItem.self))
         }
     }
     

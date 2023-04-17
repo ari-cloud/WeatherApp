@@ -14,9 +14,11 @@ class HomeScreenViewModel {
     var searchText = PublishSubject<String?>()
     var weatherViewModel = PublishSubject<WeatherViewModel>()
     
+    var historyItemsList: [String] = []
+    
     lazy var favouriteItems: Results<WeatherFavouriteItem> = {self.realm.objects(WeatherFavouriteItem.self)}()
     let itemsForFavouriteTableView = PublishSubject<Results<WeatherFavouriteItem>>()
-
+    
     let realm = StorageManager().realm
     
     private let networkManager = NetworkManager()
@@ -31,6 +33,7 @@ class HomeScreenViewModel {
                 self?.searchForWeather(with: text)
             }
             .disposed(by: disposeBag)
+        itemsForFavouriteTableView.onNext(self.favouriteItems)
     }
     
     func addToFavouriteItems(name: String, temperature: String, comletion: @escaping () -> ()) {
@@ -40,7 +43,6 @@ class HomeScreenViewModel {
             item.temperature = temperature
             self.storageManager.addToStorageManager(item: item)
             itemsForFavouriteTableView.onNext(self.favouriteItems)
-            itemsForFavouriteTableView.onCompleted()
             print(self.favouriteItems)
         } else {
            comletion()
@@ -69,3 +71,5 @@ class HomeScreenViewModel {
         self.weatherViewModel.onNext(WeatherViewModel(from: weather))
     }
 }
+
+

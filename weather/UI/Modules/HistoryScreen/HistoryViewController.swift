@@ -9,7 +9,7 @@ import UIKit
 
 class HistoryViewController: UIViewController {
 
-    let viewModel = HistoryViewModel()
+    var viewModel: HistoryViewModel?
     
     private let historyTableView: UITableView = {
         let tableView = UITableView()

@@ -1,10 +1,3 @@
-//
-//  ViewController.swift
-//  weather
-//
-//  Created by Арина Моргачева on 16.03.2023.
-//
-
 import UIKit
 import RxSwift
 
@@ -47,7 +40,7 @@ class HomeScreenViewController: UIViewController, UIScrollViewDelegate {
     private let favouriteButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "favouriteIconNotChoosen"), for: .normal)
-        button.addTarget(self, action: #selector(favouriteButtonAction), for: .touchUpInside)
+        button.addTarget(nil, action: #selector(favouriteButtonAction), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -74,7 +67,7 @@ class HomeScreenViewController: UIViewController, UIScrollViewDelegate {
         let button = UIButton()
         button.backgroundColor = .gray
         button.setTitle("Show History", for: button.state)
-        button.addTarget(self, action: #selector(showHistoryButtonAction), for: .touchUpInside)
+        button.addTarget(nil, action: #selector(showHistoryButtonAction), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -90,6 +83,8 @@ class HomeScreenViewController: UIViewController, UIScrollViewDelegate {
         view.backgroundColor = .white
         
         setupLayoutConstraints()
+        bindFavouriteTableView()
+        checkFavouriteIsEmpty()
         
         viewModel.weatherViewModel.subscribe(onNext: { [weak self] weather in
             guard let self else { return }
@@ -97,10 +92,14 @@ class HomeScreenViewController: UIViewController, UIScrollViewDelegate {
                 self.cityNameLabel.text = weather.name
                 self.tempertureLabel.text = weather.degrees
                 guard let name = weather.name else { return }
-                self.checkFavourites(name: name)
+                self.viewModel.historyItemsList.append(name)
+                print(self.viewModel.historyItemsList)
+                self.checkIfItemInFavourites(name: name)
             }
         })
         .disposed(by: disposeBag)
+        
+        viewModel.itemsForFavouriteTableView.onNext(viewModel.favouriteItems)
         
         textField.rx.text
             .orEmpty
@@ -116,24 +115,40 @@ class HomeScreenViewController: UIViewController, UIScrollViewDelegate {
         guard let name = self.cityNameLabel.text else { return }
         guard let temperature = self.tempertureLabel.text else { return }
         if sender.image(for: .normal) == UIImage(named: "favouriteIconNotChoosen") {
-            viewModel.addToFavouriteItems(name: name, temperature: temperature, comletion: showAlert)
+            viewModel.addToFavouriteItems(name: name, temperature: temperature, comletion: showTooManyAlert)
             sender.setImage(UIImage(named: "favouriteIconChoosen"), for: .normal)
         } else {
             viewModel.deleteFromFavouriteItems(name: name)
             sender.setImage(UIImage(named: "favouriteIconNotChoosen"), for: .normal)
         }
+        reloadFavouriteTableView()
     }
     
-    func showAlert() {
-        DispatchQueue.main.async {
-            let alert = UIAlertController(title: "Favorites cannot contain more than three items. Delete item to continue", message: nil, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alert.addAction(cancelAction)
-            self.present(alert, animated: true, completion: nil)
+    func reloadFavouriteTableView() {
+        if viewModel.favouriteItems.isEmpty  {
+            showEmptyAlert()
+            self.favouriteTableView.isHidden = true
+        } else {
+            self.favouriteTableView.isHidden = false
+            self.favouriteTableView.reloadData()
         }
     }
     
-    func checkFavourites(name: String) {
+    func showTooManyAlert() {
+        let alert = UIAlertController(title: "Favorites cannot contain more than three items. Delete item to continue", message: nil, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func showEmptyAlert() {
+        let alert = UIAlertController(title: "Favorites is empty now.", message: nil, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func checkIfItemInFavourites(name: String) {
         for item in viewModel.favouriteItems {
             if item.name == name {
                 self.favouriteButton.setImage(UIImage(named: "favouriteIconChoosen"), for: .normal)
@@ -150,6 +165,14 @@ class HomeScreenViewController: UIViewController, UIScrollViewDelegate {
             cell.favouriteCityLabel.text = item.name
             cell.favouriteCityTemperatureLabel.text = item.temperature
         }.disposed(by: disposeBag)
+    }
+    
+    func checkFavouriteIsEmpty() {
+        if viewModel.favouriteItems.isEmpty {
+            self.favouriteTableView.isHidden = true
+        } else {
+            self.favouriteTableView.isHidden = false
+        }
     }
     
     private func setupLayoutConstraints() {
